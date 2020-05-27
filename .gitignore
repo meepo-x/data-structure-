@@ -1,52 +1,106 @@
-# Prerequisites
-*.d
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+// learning LNode.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+//
+#include <iostream>
+#include<malloc.h>
+typedef struct LNode {//定义链表结构体重命名为LNode
+    int data;
+    struct LNode* next;
+}LNode, * LinkList;
+//头插法
+LinkList List_HeadInsert(LinkList& L) {
+	int x;
+	LNode* s; //建立新节点s
+	L = (LinkList)malloc(sizeof(LNode));//创建新链表，L为头节点
+	printf("请输入插入的数值");
+	L->next = NULL;//头节点指向为空，初始为空链表
+	scanf_s("%d", &x);//输入数据x
+	while (x != 999) {//当x等于999时结束
+		s = (LNode*)malloc(sizeof(LNode));//新建节点s，给他分配空间
+		s->data = x;//s的数据与为x
+		s->next = L->next;//s的指针域指向头节点的指针域
+		L->next = s;//头节点指向s
+		scanf_s("%d", &x);
+	}
+	return L;//返回链表L
+}
+//头插法建立一定个数的单链表
+LinkList Head_num(LinkList& L, int n) {
+	L = (LinkList)malloc(sizeof(LNode));
+	L->next = NULL; //先建立一个带有头节点的单链表
+	LNode* s;
+	for (int i = n; i > 0; i--) {
+		s = (LNode*)malloc(sizeof(LNode));
+		printf("请输入插入的数值");
+		scanf_s("%d", &s->data); //输入要插入的数据的data 
+		s->next = L->next;
+		L->next = s;    //头插法移动链表 
+	}
+	return L;
+}
+//尾插法
+LinkList Tail_Insert(LinkList& L) {
+	int x;
+	L = (LinkList)malloc(sizeof(LNode));//创建新链表,L为头节点
+	LNode* s;//建立新节点s
+	LNode*r = L;//r为表尾指针
+	printf("请输入插入的数值");
+	scanf_s("%d", &x);//输入数据x
+	while (x!=999) {//当x等于999时结束
+		s = (LNode*)malloc(sizeof(LNode));//新建节点s，给他分配空间
+		s->data = x;//s的数据域为x
+		r->next = s;//将尾节点指向s
+		r = s;//将r指向s处，为新的表尾结点
+		scanf_s("%d", &x);
+	}
+	r->next = NULL;//尾节点指针置空
+	return L;//返回链表L
+}
+//尾插法建立一定个数的单链表
+LinkList Tail_num(LinkList &L,int n) {
+	L = (LinkList)malloc(sizeof(LNode));
+	LNode* s;
+	LNode* r = L;
+	for (int i = n; i > 0; i--) {
+		s = (LNode*)malloc(sizeof(LNode));
+		printf("请输入插入的值");
+		scanf_s("%d", &s->data);
+		r->next = s;
+		r = s;
+	}
+	r->next = NULL;
+	return L;
+}
+//遍历链表
+LinkList printL(LinkList L) {
+    LinkList p;
+    p = L->next;
+    while (p != NULL) {   //遍历链表P中的所有data 
+        printf("%d", p->data);
+        p = p->next;
+    }
+	return L;
+}
+//按序号查找节点值
+LNode* GetElem(LinkList L, int i) {
+	int j = 1;//计数，初始为1
+	LNode* p = L->next;//头节点指针付给p
+	if (i == 0)
+		return L;//若i=0,返回头节点
+	if (i < 1)
+		return NULL;//若i无效，返回NULL
+	while (p && j < i) {//从第1个节点开始找，查找第i个节点
+		p = p->next;
+		j++;
+	}
+	return p;//返回第i个节点的指针，若i大于表长返回NULL
+}
+int main(){
+	LinkList L;
+	//CreateList_L(L, 4);   //创建长度为4的链表 （头插法）
+	//printL(L);    //输出链表L
+	//List_HeadInsert(L);//头插法建立链表
+	//Tail_Insert(L);
+	//Tail_num(L, 4);
+	//printL(L);
+	//GetElem(L, 4);
+}
